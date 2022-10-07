@@ -89,6 +89,7 @@ You will have to manually download the output file. Here are the artifacts:
 
         if status == 'completed':
             local_fn = self.app_config['output_audio_fn']
+            local_fn = local_fn[:-3] + 'zip'
 
             Path(os.path.realpath(os.path.dirname(local_fn))).mkdir(parents=True, exist_ok=True)
             if os.path.exists(local_fn):
