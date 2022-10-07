@@ -2,7 +2,7 @@ text_source:
   choices:
     - url
     - pdf
-  invocation: url
+  invocation: pdf
 
 lang:
   choices:
@@ -18,7 +18,7 @@ lang:
   invocation: english
 
 url: 'https://www.npr.org/2022/10/06/1127309311/florida-officials-are-scrambling-to-limit-hurricane-ians-impact-on-the-election'
-pdf:
+pdf: '/Users/bing.wu/Downloads/nyt_chinese_chip.pdf'
 
 output:
   directory: ~/Desktop
@@ -34,6 +34,7 @@ engines:
   chinese:
     choices:
       - azure
+  invocation: azure
 
 aws:
   s3_bucket: web20221005-audio-files2
@@ -45,5 +46,7 @@ aws:
   voice_id:
 
 azure:
-  region: "East US"
+  region:
   voice_name:
+  locale:
+  audio_format:

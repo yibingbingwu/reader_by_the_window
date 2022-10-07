@@ -7,7 +7,7 @@ from typing import Optional
 import yaml
 
 from engine_aws import AwsPolly
-from engine_azure import azure_cogno_call
+from engine_azure import azure_cogno_call, AzureBob
 
 logger = logging.getLogger(__name__)
 # logger.setLevel(logging.INFO)
@@ -102,14 +102,18 @@ if __name__ == '__main__':
     else:
         pass
 
-    if what_engine_to_use() == 'aws':
+    use_eng = what_engine_to_use()
+    if use_eng == 'aws':
         logger.info(f'Using AWS engine')
         eng = AwsPolly(APP_CONFIG)
-        output = eng.convert(out_txt)
+        eng.convert(out_txt)
 
-    elif what_engine_to_use() == 'azure':
+    elif use_eng == 'azure':
         logger.info(f'Using Azure engine')
-        output = azure_cogno_call(out_txt)
+        eng = AzureBob(APP_CONFIG)
+        assert extracted_txt_fn and os.path.exists(
+            extracted_txt_fn), "To use Azure Long Audio service, you need to save the text extraction first"
+        eng.convert_long(extracted_txt_fn)
 
     else:
-        pass
+        assert False, f"Unknown Engine specification {use_eng}"
