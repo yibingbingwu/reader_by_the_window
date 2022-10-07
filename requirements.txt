@@ -1,0 +1,4 @@
+boto3~=1.24
+azure-cognitiveservices-speech==1.23.0
+trafilatura==1.3.0
+pdfplumber==0.7.5

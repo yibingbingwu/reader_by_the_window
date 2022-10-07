@@ -1,0 +1,49 @@
+text_source:
+  choices:
+    - url
+    - pdf
+  invocation: url
+
+lang:
+  choices:
+    - english
+    - chinese-china
+    - chinese-manchou
+    - chinese-bashu
+    - chinese-qilu
+    - chinese-taiwan
+    - chinese-yue
+    - chinese-henan
+    - chinese-qinchuan
+  invocation: english
+
+url: 'https://www.npr.org/2022/10/06/1127309311/florida-officials-are-scrambling-to-limit-hurricane-ians-impact-on-the-election'
+pdf:
+
+output:
+  directory: ~/Desktop
+  extracted_text_dir: /tmp
+  invocation:
+    theme-word: npr_test2
+
+engines:
+  english:
+    choices:
+      - aws
+      - azure
+  chinese:
+    choices:
+      - azure
+
+aws:
+  s3_bucket: web20221005-audio-files2
+  s3_key_path:
+  aws_access_key_id:
+  aws_secret_access_key:
+  region_name: us-west-2
+  language_code:
+  voice_id:
+
+azure:
+  region: "East US"
+  voice_name:
