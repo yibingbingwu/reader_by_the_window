@@ -27,7 +27,7 @@ output:
   directory: ~/Desktop
   extracted_text_dir: /tmp
   invocation:
-    theme-word: newyorker_cia
+    theme-word: newyorker_cia2
 
 engines:
   english:
@@ -37,7 +37,7 @@ engines:
   chinese:
     choices:
       - azure
-  #invocation: azure
+  invocation: azure
 
 aws:
   s3_bucket: web20221005-audio-files2
@@ -47,6 +47,7 @@ aws:
   region_name: us-west-2
   language_code:
   voice_id:
+  speed: 0.93
 
 # Azure resources:
 # Voice list: https://learn.microsoft.com/en-us/azure/cognitive-services/speech-service/language-support?tabs=stt-tts#prebuilt-neural-voices
@@ -55,5 +56,5 @@ azure:
   locale:
   region:
   audio_format:
-  speed: 0.90
+  speed: 1.00
   pitch: 1.00

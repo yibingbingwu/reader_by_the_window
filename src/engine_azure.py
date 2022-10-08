@@ -1,3 +1,4 @@
+import html
 import json
 import logging
 import ntpath
@@ -11,12 +12,15 @@ from typing import Optional, Tuple, Dict
 import azure.cognitiveservices.speech as speechsdk
 import requests
 
+from engine_base import VoiceEngine
+
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.DEBUG)
 
 
-class AzureBob(object):
+class AzureBob(VoiceEngine):
     locale_mapping = {
+        'english': ('zh-US', ['en-US-MichelleNeural', 'en-US-EricNeural']),
         'chinese-普通': ('zh-CN', ['zh-CN-YunfengNeural']),
         'chinese-四川': ('zh-CN-sichuan', ['zh-CN-sichuan-YunxiNeural']),
         'chinese-东北': ('zh-CN-liaoning', ['zh-CN-liaoning-XiaobeiNeural']),
@@ -46,18 +50,20 @@ class AzureBob(object):
         else:
             self.voice_name = mapping[1][0]
 
-    def _calc_change(self):
-        if self.app_config['azure'].get('speed'):
-            self.rate = '{:+.2f}%'.format((float(self.app_config['azure']['speed']) - 1) * 100)
+    def _calc_tone_change(self):
+        if self.app_config[self.eng].get('speed'):
+            self.rate = '{:+.2f}%'.format((float(self.app_config[self.eng]['speed']) - 1) * 100)
         else:
             self.rate = "-0.00%"
 
-        if self.app_config['azure'].get('pitch'):
-            self.pitch = '{:+.2f}%'.format((float(self.app_config['azure']['pitch']) - 1) * 100)
+        if self.app_config[self.eng].get('pitch'):
+            self.pitch = '{:+.2f}%'.format((float(self.app_config[self.eng]['pitch']) - 1) * 100)
         else:
             self.pitch = "-0.00%"
 
     def __init__(self, app_config: dict):
+        super().__init__(app_config, 'azure')
+
         self.app_config = app_config
         self.region = self.app_config.get('region') or 'eastus'
         self.api_key = self._get_key_val('speech_key')
@@ -66,12 +72,6 @@ class AzureBob(object):
             'Ocp-Apim-Subscription-Key': self.api_key
         }
         self._resolve_locale_voice()
-        self._calc_change()
-
-    def _get_key_val(self, key: str, def_val: str = None) -> str:
-        val = self.app_config['azure'].get(key, None) or os.getenv(key.upper(), None) or def_val
-        assert val, f"Missing key/value for '{key}'"
-        return val or def_val
 
     def get_voices(self):
         # Display as plain text what the Voice Names are available for the Speech Resource represented by this key
@@ -97,14 +97,15 @@ class AzureBob(object):
         task_inst = speechsdk.SpeechSynthesizer(speech_config=task_cfg, audio_config=audio_cfg)
 
         # result = task_inst.speak_text_async(src_txt).get()
-        new_txt = f"""<speak version="1.0" xmlns="http://www.w3.org/2001/10/synthesis" xml:lang="en-US">
+        esc_txt = html.escape(src_txt)
+        ssml_txt = f"""<speak version="1.0" xmlns="http://www.w3.org/2001/10/synthesis" xml:lang="en-US">
     <voice name="{self.voice_name}">
         <prosody pitch="{self.pitch}" rate="{self.rate}">
-{src_txt}
+{esc_txt}
         </prosody>
     </voice>
 </speak>"""
-        result = task_inst.speak_ssml_async(new_txt).get()
+        result = task_inst.speak_ssml_async(ssml_txt).get()
         if result.reason == speechsdk.ResultReason.SynthesizingAudioCompleted:
             return True
 

@@ -1,3 +1,4 @@
+import html
 import logging
 import os
 import pprint
@@ -7,13 +8,15 @@ from typing import Optional
 
 import boto3
 
+from engine_base import VoiceEngine
+
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.DEBUG)
 
 
-class AwsPolly(object):
+class AwsPolly(VoiceEngine):
     def __init__(self, app_config: dict):
-        self.app_config = app_config
+        super().__init__(app_config, 'aws')
 
         call_param = {'aws_access_key_id': None, 'aws_secret_access_key': None, 'region_name': None}
         for x in call_param.keys():
@@ -31,21 +34,22 @@ class AwsPolly(object):
         self.lang = self._get_key_val('language_code', 'en-US')
         self.voice_id = self._get_key_val('voice_id', 'Matthew')
 
-    def _get_key_val(self, key: str, def_val: str = None) -> str:
-        val = self.app_config['aws'].get(key, None) or os.getenv(key.upper(), None) or def_val
-        assert val, f"Missing key/value for '{key}'"
-        return val or def_val
-
     def convert(self, src_txt: str) -> bool:
         logger.debug("Submitting a new async conversion task ...")
+        esc_txt=html.escape(src_txt)
+        ssml_txt = f"""<speak>
+    <prosody rate="{self.rate}">
+{esc_txt}
+    </prosody>
+</speak>"""
         response = self.polly_client.start_speech_synthesis_task(
             Engine='neural',
             LanguageCode=self.lang,
             OutputFormat='mp3',
             OutputS3BucketName=self.s3_bucket,
             OutputS3KeyPrefix=self.s3_key_path,
-            Text=src_txt,
-            TextType='text',
+            Text=ssml_txt,
+            TextType='ssml',
             VoiceId=self.voice_id,
         )
 

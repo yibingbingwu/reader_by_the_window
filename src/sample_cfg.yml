@@ -4,7 +4,7 @@ text_source:
     - pdf
     - txt
   invocation: txt
-#  inspect_output: True
+  inspect_output: True
 
 lang:
   choices:
@@ -19,10 +19,7 @@ lang:
     - chinese-陕西
   invocation: chinese-普通
 
-#url: 'https://www.npr.org/2022/10/06/1127309311/florida-officials-are-scrambling-to-limit-hurricane-ians-impact-on-the-election'
 url: 'http://sokamonline.com/NovelMain/JinYong/hero23.cfm'
-#pdf: '/Users/bing.wu/Downloads/nyt_chinese_chip.pdf'
-#pdf: '/Users/bing.wu/Downloads/chengyu.pdf'
 txt: '/private/tmp/jinyong_xiaoshuo.extracted.txt'
 pdf: '/Users/bing.wu/Downloads/shediaoyinxion.pdf'
 
@@ -30,7 +27,7 @@ output:
   directory: ~/Desktop
   extracted_text_dir: /tmp
   invocation:
-    theme-word: jinyong_xiaoshuo
+    theme-word: sample_output
 
 engines:
   english:
@@ -50,6 +47,9 @@ aws:
   region_name: us-west-2
   language_code:
   voice_id:
+  speed: 0.93
+# Pitch doesn't apply to AWS
+#  pitch: 1.00
 
 # Azure resources:
 # Voice list: https://learn.microsoft.com/en-us/azure/cognitive-services/speech-service/language-support?tabs=stt-tts#prebuilt-neural-voices
@@ -58,5 +58,5 @@ azure:
   locale:
   region:
   audio_format:
-  speed: 0.90
+  speed: 0.96
   pitch: 1.00
