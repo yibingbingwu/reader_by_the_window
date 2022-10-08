@@ -47,12 +47,11 @@ def process_config(cfg_fn: str) -> dict:
 
     output_dict = conf['output']
     assert output_dict['directory'], 'Missing output directory'
-    Path(output_dict['directory']).mkdir(parents=True, exist_ok=True)
-
     assert output_dict['invocation']['theme-word'], 'Missing a generic name to describe this invocation'
+
     conf['invocation-theme-word'] = output_dict['invocation']['theme-word']
     conf['output_extracted_txt_fn'] = _parse_dir(output_dict['extracted_text_dir']) + os.sep + \
-                                      output_dict['invocation']['theme-word'] + '.extracted.txt'
+                                      conf['invocation-theme-word'] + '.extracted.txt'
     conf['output_audio_fn'] = _parse_dir(output_dict['directory']) + os.sep + \
                               output_dict['invocation']['theme-word'] + '.mp3'
     conf.pop('output', None)
