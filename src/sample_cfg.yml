@@ -37,7 +37,7 @@ engines:
   chinese:
     choices:
       - azure
-  invocation: azure
+#  invocation: azure
 
 aws:
   s3_bucket: web20221005-audio-files2
