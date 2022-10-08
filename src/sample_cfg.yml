@@ -17,7 +17,7 @@ lang:
     - chinese-广东
     - chinese-河南
     - chinese-陕西
-  invocation:     chinese-普通
+  invocation: chinese-普通
 
 #url: 'https://www.npr.org/2022/10/06/1127309311/florida-officials-are-scrambling-to-limit-hurricane-ians-impact-on-the-election'
 url: 'http://sokamonline.com/NovelMain/JinYong/hero23.cfm'
@@ -51,12 +51,12 @@ aws:
   language_code:
   voice_id:
 
+# Azure resources:
+# Voice list: https://learn.microsoft.com/en-us/azure/cognitive-services/speech-service/language-support?tabs=stt-tts#prebuilt-neural-voices
 azure:
   voice_name:
   locale:
   region:
   audio_format:
-
-
-# Azure resources:
-# Voice list: https://learn.microsoft.com/en-us/azure/cognitive-services/speech-service/language-support?tabs=stt-tts#prebuilt-neural-voices
+  speed: 0.90
+  pitch: 1.00

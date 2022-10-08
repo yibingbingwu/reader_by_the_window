@@ -20,7 +20,7 @@ class AzureBob(object):
         'chinese-普通': ('zh-CN', ['zh-CN-YunfengNeural']),
         'chinese-四川': ('zh-CN-sichuan', ['zh-CN-sichuan-YunxiNeural']),
         'chinese-东北': ('zh-CN-liaoning', ['zh-CN-liaoning-XiaobeiNeural']),
-        'chinese-山东': ('zh-CN-shandong', ['zh-CN-sichuan-YunxiNeural']),
+        'chinese-山东': ('zh-CN-shandong', ['zh-CN-shandong-YunxiangNeural']),
         'chinese-台湾': ('zh-TW', ['zh-TW-HsiaoChenNeural']),
         'chinese-广东': ('zh-HK', ['zh-HK-WanLungNeural']),
         'chinese-河南': ('zh-CN-henan', ['zh-CN-henan-YundengNeural']),
@@ -46,6 +46,17 @@ class AzureBob(object):
         else:
             self.voice_name = mapping[1][0]
 
+    def _calc_change(self):
+        if self.app_config['azure'].get('speed'):
+            self.rate = '{:+.2f}%'.format((float(self.app_config['azure']['speed']) - 1) * 100)
+        else:
+            self.rate = "-0.00%"
+
+        if self.app_config['azure'].get('pitch'):
+            self.pitch = '{:+.2f}%'.format((float(self.app_config['azure']['pitch']) - 1) * 100)
+        else:
+            self.pitch = "-0.00%"
+
     def __init__(self, app_config: dict):
         self.app_config = app_config
         self.region = self.app_config.get('region') or 'eastus'
@@ -55,6 +66,7 @@ class AzureBob(object):
             'Ocp-Apim-Subscription-Key': self.api_key
         }
         self._resolve_locale_voice()
+        self._calc_change()
 
     def _get_key_val(self, key: str, def_val: str = None) -> str:
         val = self.app_config['azure'].get(key, None) or os.getenv(key.upper(), None) or def_val
@@ -68,7 +80,7 @@ class AzureBob(object):
         print(response.text)
 
     def convert(self, src_txt: str) -> bool:
-        if (len(str.encode(src_txt)))>65536:
+        if (len(str.encode(src_txt))) > 65536:
             raise ValueError("Azure engine has an implementation-imposed size limit of 65536 bytes. "
                              "Please edit the input file and try again")
 
@@ -84,7 +96,15 @@ class AzureBob(object):
         task_cfg.speech_synthesis_voice_name = self.voice_name
         task_inst = speechsdk.SpeechSynthesizer(speech_config=task_cfg, audio_config=audio_cfg)
 
-        result = task_inst.speak_text_async(src_txt).get()
+        # result = task_inst.speak_text_async(src_txt).get()
+        new_txt = f"""<speak version="1.0" xmlns="http://www.w3.org/2001/10/synthesis" xml:lang="en-US">
+    <voice name="{self.voice_name}">
+        <prosody pitch="{self.pitch}" rate="{self.rate}">
+{src_txt}
+        </prosody>
+    </voice>
+</speak>"""
+        result = task_inst.speak_ssml_async(new_txt).get()
         if result.reason == speechsdk.ResultReason.SynthesizingAudioCompleted:
             return True
 
