@@ -33,6 +33,7 @@ def process_config(cfg_fn: str) -> dict:
     assert conf['engines'][lang_prefix], "Missing or mis-defined Language for this run. Or cannot find matching Engine"
     conf.pop('lang', None)
     conf['lang'] = this_lang
+    conf['lang_prefix'] = lang_prefix
 
     src_key = conf['text_source']['invocation']
     assert conf[src_key], f"Missing value for key '{src_key}'"
@@ -63,7 +64,7 @@ def what_engine_to_use():
     if APP_CONFIG.get('engines').get('invocation', None):
         return APP_CONFIG['engines']['invocation']
 
-    this_lang = APP_CONFIG['lang']
+    this_lang = APP_CONFIG['lang_prefix']
     return APP_CONFIG['engines'][this_lang]['choices'][0]
 
 
