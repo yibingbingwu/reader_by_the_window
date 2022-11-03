@@ -1,0 +1,63 @@
+text_source:
+  choices:
+    - url
+    - pdf
+    - txt
+  invocation: pdf
+  inspect_output: True
+
+lang:
+  choices:
+    - english
+    - chinese-普通
+    - chinese-东北
+    - chinese-四川
+    - chinese-山东
+    - chinese-台湾
+    - chinese-广东
+    - chinese-河南
+    - chinese-陕西
+  invocation: chinese-陕西
+
+
+url: 'https://zh.m.wikipedia.org/zh-hans/%E8%83%A1%E9%94%A6%E6%B6%9B'
+txt: '/private/tmp/lisas_output.extracted.txt'
+pdf: '/Users/ywu/Downloads/lisas_input.pdf'
+
+output:
+  directory: ~/Desktop
+  extracted_text_dir: /tmp
+  invocation:
+    theme-word: lisas_output
+
+engines:
+  english:
+    choices:
+      - aws
+      - azure
+  chinese:
+    choices:
+      - azure
+#  invocation: azure
+
+aws:
+  s3_bucket: web20221005-audio-files2
+  s3_key_path:
+  aws_access_key_id:
+  aws_secret_access_key:
+  region_name: us-west-2
+  language_code:
+  voice_id:
+  speed: 0.93
+# Pitch doesn't apply to AWS
+#  pitch: 1.00
+
+# Azure resources:
+# Voice list: https://learn.microsoft.com/en-us/azure/cognitive-services/speech-service/language-support?tabs=stt-tts#prebuilt-neural-voices
+azure:
+  voice_name:
+  locale:
+  region:
+  audio_format:
+  speed: 0.87
+  pitch: 1.00
