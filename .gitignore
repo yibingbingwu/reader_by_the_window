@@ -133,3 +133,4 @@ dmypy.json
 *.yml
 **/.*.swp
 **/.idea
+**/.DS_Store
