@@ -1,0 +1,9 @@
+- Azure has the most options
+- Console
+    - url: https://portal.azure.com/#view/Microsoft_Azure_ProjectOxford/CognitiveServicesHub/~/SpeechServices
+- If init try fails, checkout the `eng_test_basic` function call in `src/engine_azure.py`
+- Also, try latest test code by going to:
+    - Google: azure speech studio
+    - Go to Voice Gallery
+    - Try a few voices, then find the **Sample Code** tab
+- First try may not have the right output, try find a sample code that saves the voice output to a file
