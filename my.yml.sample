@@ -21,14 +21,14 @@ lang:
 
 
 url: 'https://zh.m.wikipedia.org/zh-hans/%E8%83%A1%E9%94%A6%E6%B6%9B'
-txt: '/private/tmp/lisas_output.extracted.txt'
-pdf: '/Users/ywu/Downloads/lisas_input.pdf'
+txt: '/private/tmp/my_output.extracted.txt'
+pdf: '/Users/ywu/Downloads/my_input.pdf'
 
 output:
   directory: ~/Desktop
   extracted_text_dir: /tmp
   invocation:
-    theme-word: lisas_output
+    theme-word: my_output
 
 engines:
   english:
